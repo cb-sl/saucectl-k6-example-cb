@@ -1,0 +1,23 @@
+kind: imagerunner
+apiVersion: v1alpha
+
+suites:
+  - name: "Grafana k6 load tests"
+    image: cbsl/k6:0.0.1
+    timeout: 10m
+    workload: other
+    artifacts:
+      - "/app/artifacts/test-results"
+    files:
+      - src: tests/k6.js
+        dst: /app/tests/k6.js
+
+    entrypoint: k6 run tests/k6.js
+
+artifacts:
+  cleanup: false
+  download:
+    when: always
+    match:
+      - '*'
+    directory: ./artifacts
